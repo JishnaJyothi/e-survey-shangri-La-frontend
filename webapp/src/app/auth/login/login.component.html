@@ -1,19 +1,30 @@
 <div class="wrapper">
   <div class="inner">
     <img src="../../../assets/images/image-1.png" alt="" class="image-1" />
-    <form action="">
+    <form id="login-form" class="form" [formGroup]="loginForm" autocomplete="off" (ngSubmit)="doLogin()">
       <h3>Welcome back</h3>
-      <div class="form-holder">
+      
+      <div class="form-col-div">
+        <div class="form-holder">
         <span class="lnr lnr-user"></span>
-        <input type="text" class="form-control" placeholder="Username" />
+        <input type="text" formControlName="email" id="email" class="form-control" placeholder="Email" />
       </div>
+      <app-control-messages [control]="loginForm.controls.email"></app-control-messages>
+    </div>
+      
+    <div class="form-col-div">
       <div class="form-holder">
-        <span class="lnr lnr-lock"></span>
-        <input type="password" class="form-control" placeholder="Password" />
+          <span class="lnr lnr-lock"></span>
+          <input type="password" formControlName="password" id="password" class="form-control" placeholder="Password" />
+          <i class="fal hide-show-password" [ngClass]="{'fa-eye-slash': !passwordView, 'fa-eye': passwordView}" (click)="viewPassword()"></i>
+        </div>
+        <app-control-messages [control]="loginForm.controls.password"></app-control-messages>
       </div>
-      <button routerLink="/resident/survey">
+
+      <button type="submit" class="login" [disabled]="loginForm.invalid">
         <span>Login</span>
       </button>
+
       <div class="login-signUp">
         Don't have an account? &nbsp; 
         <span class="login-signUp-button" routerLink="/sign-up"> &nbsp; Register<span class="lnr lnr-arrow-right"></span></span>
