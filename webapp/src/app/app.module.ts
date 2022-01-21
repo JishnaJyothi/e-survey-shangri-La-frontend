@@ -3,9 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { MatDialogModule } from '@angular/material/dialog'
 import { ToastrModule } from 'ngx-toastr'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ControlMessagesComponent } from './utils/control-messages/control-messages.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -18,6 +21,7 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 @NgModule({
   declarations: [
     AppComponent,
+    ControlMessagesComponent,
     AuthLayoutComponent,
     LoginComponent,
     RegisterComponent,
@@ -28,6 +32,9 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
   ],
   imports: [
     MatDialogModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       preventDuplicates: true,

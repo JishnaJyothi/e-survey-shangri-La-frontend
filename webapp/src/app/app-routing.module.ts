@@ -14,7 +14,7 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 
 const routes: Routes = [
   {
-    path: 'auth', component: AuthLayoutComponent,
+    path: '', component: AuthLayoutComponent,
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'resident',
-    canActivate: [AuthMiddleware],
+    // canActivate: [AuthMiddleware],
     children: [
       { path: '', redirectTo: 'survey', pathMatch: 'full' },
       { path: 'survey', component: SurveyListComponent },
@@ -31,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'council',
-    canActivate: [AuthMiddleware],
+    // canActivate: [AuthMiddleware],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },

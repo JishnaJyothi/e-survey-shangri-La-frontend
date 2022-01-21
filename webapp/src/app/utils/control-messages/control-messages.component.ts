@@ -13,12 +13,14 @@ export class ControlMessagesComponent implements OnInit {
   public invalidformtrue = false
   constructor(private observables: ObservablesService) {}
 
+  // tslint:disable-next-line:typedef
   public ngOnInit() {
     this.observables.validForm.subscribe((formValid) => {
       this.invalidformtrue = formValid
     })
   }
 
+  // tslint:disable-next-line:typedef
   get errorMessage() {
     if (this.control && this.control.errors) {
       for (const propertyName in this.control.errors) {
@@ -29,6 +31,6 @@ export class ControlMessagesComponent implements OnInit {
         }
       }
     }
-    return null
+    return null;
   }
 }

@@ -16,7 +16,7 @@ export class AuthMiddleware implements CanActivate {
 
     //  not logged in so redirect to login page
     this.alert.error('Oops!', 'Please login before redirecting.');
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
     return false;
   }
 }

@@ -101,8 +101,17 @@ a {
  .or{
    text-align: center;
    width: 100%;
+   margin: 0.5rem 0;
  }
-
+ .error {
+  color: #d32f2f;
+  font-style: italic;
+  padding: 1% 4%;
+  text-align: left;
+}
+.hide-show-password{
+  left: 90% !important;
+}
  .login-signUp{
   text-align: center;
   font-size: 1rem;
@@ -190,9 +199,13 @@ h3 {
   text-align: center;
   margin-bottom: 33px; }
 
+.form-col-div{
+  margin-bottom: 0.75rem !important;
+}
 .form-holder {
   position: relative;
-  margin-bottom: 21px; }
+  margin-bottom: 0.5rem;
+ }
   .form-holder span {
     position: absolute;
     left: 0;
@@ -242,6 +255,12 @@ h3 {
 
   input:focus, textarea:focus, select:focus{
     outline: none !important;
+}
+button:disabled{
+  opacity: 0.5;
+  transform: none;
+  -webkit-transform: none;
+  cursor:not-allowed;
 }
 
 button {
