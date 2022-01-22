@@ -10,6 +10,7 @@ import { ValidationService } from './../../services/validation.service';
 // Alerts
 import { AlertBox } from './../../utils/alert-box';
 import { QrCodeScannerModalComponent } from '../qr-code-scanner-modal/qr-code-scanner-modal.component';
+import { IfStmt } from '@angular/compiler';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -45,7 +46,7 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, ValidationService.passwordValidator]],
       confirmPassword: ['', [Validators.required, ValidationService.passwordValidator]],
       address: ['', [Validators.required]],
-      sniNumber: ['', [ValidationService.alphaNumericValidator]],
+      sniNumber: ['', [Validators.required, ValidationService.alphaNumericValidator]],
     },
     {
       validator: [MustMatch('password', 'confirmPassword')],
@@ -119,31 +120,39 @@ export class RegisterComponent implements OnInit {
     this.observables.changeFormValid(true);
     return;
   } else if (!this.sniUnique && !this.emailUnique) {
+    this.doCheckUniqueEmail(this.registerForm.value.sniNumber);
+    this.doCheckUniqueSNI(this.registerForm.value.email);
     this.observables.changeFormValid(true);
     return;
   } else {
     (document.querySelector('.register') as HTMLInputElement).setAttribute('disabled', '');
   }
 
-  const url = '/users/register';
+  const url = 'users/register';
+  const name = this.registerForm.value.firstName + ' ' + this.registerForm.value.lastName;
   const data: any = {
-    firstname: this.registerForm.value.firstName,
-    lastname: this.registerForm.value.lastName,
+    username: name,
     email: this.registerForm.value.email,
-    dob: this.registerForm.value.dob,
     password: this.registerForm.value.password,
+    dob: this.registerForm.value.dob,
     address: this.registerForm.value.address,
-    sniNumber: this.registerForm.value.sniNumber,
+    SNI: this.registerForm.value.sniNumber,
   };
 
   this.apiService.doPostRequest(url, data).subscribe(
     (returndata: any) => {
-      console.log(returndata);
-      
+      if (returndata.status === 'success'){
+        this.router.navigate(['/login']);
+        this.alert.success('Congratulations!', 'Your registration processes is completed, Login to have a look');
+      }
     },
     (error) => {
-      console.log(error);
+      (document.querySelector('.register') as HTMLInputElement).removeAttribute('disabled');
+      if (error.error.message) {
+        this.alert.error('Error!', error.error.message);
+      } else {
       this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
     }
   );
 }

@@ -21,9 +21,8 @@
    public userLogins: any;
    public userId: any;
    public userRole: string;
-   public userFirstname: string;
+   public userName = '';
    private httpOptions: any;
-   private httpOptionsText: any;
  
    constructor(private http: HttpClient, private router: Router) {
      if (sessionStorage.getItem('currentUser')) {
@@ -35,19 +34,15 @@
     * function to do session storage and other user details storage
     * @functionCall - getAccessToken()
     */
-   public getAccessToken() {
-    //  if (sessionStorage.getItem('currentUser')) {
-    //    // logged in so return true
-    //    const user = JSON.parse(sessionStorage.getItem('currentUser'));
- 
-    //    this.userLogins = user.data;
-    //    this.accessToken = user.token;
-    //    this.accessTokenPlatform = user.data.token;
-    //    this.userId = user.data.uid;
-    //    this.userRole = user.data.roles[0];
-    //    this.userFirstname = user.data.firstname;
-    //    this.getheaders();
-    //  }
+   public getAccessToken(): any {
+     if (sessionStorage.getItem('currentUser')) {
+       // logged in so return true
+       const user = JSON.parse(sessionStorage.getItem('currentUser'));
+       this.accessToken = user.token;
+       this.userId = user.user.id;
+       this.userName = user.user.username;
+       this.getheaders();
+     }
      return;
    }
  
@@ -55,14 +50,12 @@
     * function to set headers for API calls
     * @functionCall - getheaders()
     */
-   public getheaders() {
-    //  this.httpOptions = {
-    //    headers: new HttpHeaders({
-    //      'Access-Control-Allow-Origin': '*',
-    //      'Content-Type': 'application/json',
-    //      'Authorization': 'Bearer' + this.accessToken,
-    //    }),
-    //  };
+   public getheaders(): any {
+     this.httpOptions = {
+       headers: new HttpHeaders({
+         'x-access-token': this.accessToken,
+       }),
+     };
    }
  
    /**
@@ -84,24 +77,25 @@
     */
  
     // Login
-   public doLogin(data: any) {
+   public doLogin(data: any): any {
      return this.http
-       .post<any>(`${environment.apiURL}` + 'api/login', data, this.httpOptions)
+       .post<any>(`${environment.apiURL}` + 'users/loginUser', data )
        .pipe(
-         map((user) => {
+         map((userData: any) => {
+
            // login successful if there's a jwt token in the response
-           if (user && user['token']) {
+           if (userData && userData.token) {
              // store user details and jwt token in session storage to keep user logged in between page refreshes
-             sessionStorage.setItem('currentUser', JSON.stringify(user));
+             sessionStorage.setItem('currentUser', JSON.stringify(userData));
              this.getAccessToken();
            }
-           return user;
+           return userData.user;
          })
        );
    }
  
    // Logout
-   public doLogout() {
+   public doLogout(): any {
      return this.http
        .post<any>(`${environment.apiURL}` + '/logout?access_token=' +
            this.accessTokenPlatform,
@@ -120,7 +114,7 @@
     */
  
    // general get service | @author: jishna.av@netobjex.com
-   public doGetRequest(url: any) {
+   public doGetRequest(url: any): any {
      this.getAccessToken();
      return this.http
        .get<any>(`${environment.apiURL}` + url, this.httpOptions)
@@ -132,7 +126,7 @@
    }
  
    // general post service | @author: jishna.av@netobjex.com
-   public doPostRequest(url: any, data: any) {
+   public doPostRequest(url: any, data: any): any {
      this.getAccessToken();
      return this.http
        .post<any>(`${environment.apiURL}` + url, data, this.httpOptions)
@@ -142,5 +136,29 @@
          })
        );
    }
+
+   // general put service | @author: jishna.av@netobjex.com
+   public doPutRequest(url: any, data: any): any {
+    this.getAccessToken();
+    return this.http
+      .put<any>(`${environment.apiURL}` + url, data, this.httpOptions)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
+
+  // general delete service | @author: jishna.av@netobjex.com
+  public doDeleteRequest(url: any, data: any): any {
+    // this.getAccessToken();
+    // return this.http
+    //   .delete<any>(`${environment.apiURL}` + url, data, this.httpOptions)
+    //   .pipe(
+    //     map((response) => {
+    //       return response;
+    //     })
+    //   );
+  }
  }
  

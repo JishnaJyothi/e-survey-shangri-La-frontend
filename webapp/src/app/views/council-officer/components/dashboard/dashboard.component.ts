@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+// services
+import { ApiService } from '../../../../services/api.service';
+// Alerts
+import { AlertBox } from '../../../../utils/alert-box';
 // import { AddCouponsComponent } from '../../modals/add-coupons/add-coupons.component'
 import { AddEditQuestionsComponent } from '../../modals/add-edit-questions/add-edit-questions.component'
 @Component({
@@ -8,23 +12,35 @@ import { AddEditQuestionsComponent } from '../../modals/add-edit-questions/add-e
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  public name: string;
   public isLoading = false;
   public questionIndex: number;
-  public questions = [
-    { id: '1', text: 'Do you have a petrol/diesel car?' },
-    { id: '2', text: 'Shall SLEZ apply to PHEVs (Plug-in hybrid electric vehicles)?'},
-    { id: '3', text: 'What should be the proposed boundaries of SLEZ?' },
-  ];
+  public questions = [];
 
   public options = [];
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private alert: AlertBox,
+    private apiService: ApiService,
   ) {}
 
   ngOnInit(): void {
-    // console.log('hii');
-    
-    // this.openAddEditQuestionOptions(0, 'Add');
+    this.name = this.apiService.userName;
+    this.getAllQuestions();
+  }
+
+  public getAllQuestions(): void{
+    const url = 'admin/viewQuestions';
+    this.apiService.doGetRequest(url).subscribe(
+      (returndata: any) => {
+        this.questions = returndata;
+        console.log(returndata);
+      },
+      (error) => {
+        console.log(error);
+        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
+    );
   }
 
   public openAddEditQuestionOptions(i: any, qsaction: string): void {
@@ -39,6 +55,24 @@ export class DashboardComponent implements OnInit {
       console.log(result.event);
       
     });
+  }
+
+  public deleteQuestion(qid: any): any {
+    const url = 'admin/removeQuestion';
+    const data = {
+      id: qid
+    };
+
+    this.apiService.doDeleteRequest(url, data).subscribe(
+      (returndata: any) => {
+        this.questions = returndata;
+        console.log(returndata);
+      },
+      (error) => {
+        console.log(error);
+        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
+    );
   }
   
 }

@@ -1,16 +1,19 @@
 .survey-wrapp {
   width: 100%;
   height: 100%;
+  /* background: linear-gradient(to bottom, #cbced3 0%, #eeeeee 51%); */
+  background-image: url(../../../../../assets/images/question1.png);
 }
 .survey {
   margin: 0;
-  padding: 4vh 5vw;
+  padding: 0vh 5vw 4vh 5vw;
 }
 .survey-head {
   font-size: 1.5rem;
   text-align: center;
   border-bottom: 0.1rem solid #cfcfcf;
-  color: #7c7c7c;
+  /* color: #7c7c7c; */
+  color: #ffffff;
   margin: 0rem 5rem 2rem 5rem;
   padding: 1rem 0;
 }
@@ -21,12 +24,17 @@
 .survey-question {
   padding: 1rem 0;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 0;
+  color: #ffffff;
 }
 .survey-question:hover {
-  color: #7c7c7c;
+  /* color: #7c7c7c; */
+  color: #ffffff;
   font-weight: 600;
+}
+.form-check-label{
+  color: #ffffff;
 }
 .do-survey {
   padding: 1rem 0;

@@ -56,7 +56,32 @@ a {
   /* width: 435px;  */
   /* width: 100%; */
 }
-
+.page-header{
+  display: flex;
+  justify-content: space-between;
+  padding: 4vh 5vw;
+  color: #ffffff;
+}
+.header-welcome{
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+.header-name{
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0.5rem;
+  color: #ffffff;
+}
+.logout{
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+.logout:hover{
+  cursor: pointer;
+  font-weight: 600;
+}
 .image-1 {
   position: absolute;
   bottom: -12px;
@@ -150,7 +175,7 @@ cursor: pointer;
  }
  .form-check-label {
   margin-bottom: 0;
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
 }
 
 .form-holder i {
@@ -325,6 +350,7 @@ button {
     -webkit-transition-delay: 0.2s;
     transition-delay: 0.2s; }
   button:hover:before, button:hover:after {
+    color: #ffffff;
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0); }
 

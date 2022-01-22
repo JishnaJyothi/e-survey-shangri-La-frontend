@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
       (document.querySelector('.login') as HTMLInputElement).setAttribute('disabled', '');
     }
 
-    const url = '';
     const data: any = {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,
@@ -58,6 +57,11 @@ export class LoginComponent implements OnInit {
     this.apiService.doLogin(data)
     .subscribe(
       (returndata: any) => {
+        if (returndata.username === 'Admin'){
+          this.router.navigate(['/council/dashboard']);
+        } else{
+          this.router.navigate(['/resident/survey']);
+        }
       }, error => {
         console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');

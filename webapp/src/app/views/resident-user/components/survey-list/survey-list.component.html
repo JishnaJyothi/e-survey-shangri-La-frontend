@@ -1,4 +1,8 @@
 <div class="survey-wrapp">
+  <header class="page-header">
+    <span class="header-welcome"> Welcome <span class="header-name">{{ name }}</span></span>
+    <span class="logout">Logout</span>
+  </header>
   <div class="survey">
     <h1 class="survey-head">e-Survey Shangri-La Questions</h1>
     <div class="survey-question-div" *ngFor="let question of questions; let i = index">

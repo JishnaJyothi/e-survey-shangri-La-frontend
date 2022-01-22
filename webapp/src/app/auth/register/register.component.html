@@ -35,7 +35,7 @@
         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-col-div">
           <div class="form-holder">
             <span class="lnr lnr-calendar-full"></span>
-            <input type="text" formControlName="dob" id="dob" class="form-control" placeholder="Date-of-Birth (yyyy/mm/dd)" />
+            <input type="text" formControlName="dob" id="dob" class="form-control" placeholder="Date-of-Birth (yyyy-mm-dd)" />
           </div>
           <app-control-messages [control]="registerForm.controls.dob"></app-control-messages>
         </div>
@@ -57,6 +57,7 @@
             <i class="fal hide-show-password" [ngClass]="{'fa-eye-slash': !confirmPasswordView, 'fa-eye': confirmPasswordView}" (click)="viewPassword('confirmPassword')"></i>
           </div>
           <app-control-messages [control]="registerForm.controls.confirmPassword"></app-control-messages>
+          <div class="error" *ngIf="registerForm.controls.confirmPassword.errors && registerForm.controls.confirmPassword.errors.mustMatch">Passwords must match</div>
         </div>
       </div>
       
@@ -86,7 +87,7 @@
         </div>
       </div>
 
-      <button routerLink="/login" class="register" [disabled]="registerForm.invalid">
+      <button class="register" [disabled]="registerForm.invalid">
         <span>Register</span>
       </button>
       </form>
