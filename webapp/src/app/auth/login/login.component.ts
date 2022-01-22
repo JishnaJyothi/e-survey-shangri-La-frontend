@@ -63,8 +63,12 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/resident/survey']);
         }
       }, error => {
-        console.log(error);
-        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        (document.querySelector('.login') as HTMLInputElement).removeAttribute('disabled');
+        if (error.error.message) {
+          this.alert.error('Error!', error.error.message);
+        } else {
+          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        }
       }
     );
 
