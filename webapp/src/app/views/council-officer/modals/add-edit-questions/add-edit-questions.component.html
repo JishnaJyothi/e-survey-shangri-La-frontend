@@ -5,30 +5,29 @@
   </div>
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <label for="" class="q-a-label" >Question <i class="fal fa-question"></i></label>
+      <label class="q-a-label" >Question <i class="fal fa-question"></i></label>
       <div class="form-holder">
-        <!-- <i class="fal fa-question"></i> -->
-        <input type="text" class="form-control" placeholder="" />
+        <input type="text" formControlName="question" id="question" class="form-control" placeholder="" />
       </div>
 
       <div class="option-div">
-        <label for="" class="q-a-label"> Options </label>
+        <label class="q-a-label"> Options </label>
       <div class="form-holder">
         <i class="fas fa-circle"></i>
-        <input type="text" class="form-control" placeholder="" />
+        <input type="text" formControlName="option1" id="option1" class="form-control" placeholder="" />
       </div>
       <div class="form-holder">
         <i class="fas fa-circle"></i>
-        <input type="text" class="form-control" placeholder="" />
+        <input type="text" formControlName="option2" id="option2" class="form-control" placeholder="" />
       </div>
       <div class="form-holder">
         <i class="fas fa-circle"></i>
-        <input type="text" class="form-control" placeholder="" />
+        <input type="text" formControlName="option3" id="option3" class="form-control" placeholder="" />
       </div>
       </div>
 
       <div class="button-div">
-        <button (click)="close()"> {{ modalTitle=='Add'?'Add':'Save' }} </button>
+        <button (click)="doAddEditQA()"> {{ modalTitle=='Add'?'Add':'Save' }} </button>
         <button (click)="close()"> Cancel </button>
       </div>
 

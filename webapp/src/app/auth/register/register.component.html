@@ -24,9 +24,13 @@
         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-col-div">
           <div class="form-holder">
             <span class="lnr lnr-envelope"></span>
-            <input type="text" formControlName="email" id="email" class="form-control" placeholder="Email" (focusout)="doCheckUniqueEmail($event)"/>
+            <input type="text" formControlName="email" id="email" class="form-control" placeholder="Email" (focusout)="doCheckUniqueOnFocusOut($event)"/>
           </div>
           <app-control-messages [control]="registerForm.controls.email"></app-control-messages>
+          <div class="unique-message" *ngIf="emailUniqueShow">
+            <i class="fas" [ngClass]="{'fa-check-circle': emailUnique, 'fa-times-circle': !emailUnique}"></i>
+            <span [ngClass]="{'unique': emailUnique, 'not-unique': !emailUnique}">Email is {{emailUnique? 'unique': 'not unique'}}</span>
+          </div>
         </div>
         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-col-div">
           <div class="form-holder">
@@ -66,12 +70,16 @@
         </div>
         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 sni-div">
           <div class="form-holder sni-num-input">
-            <input type="text" formControlName="sniNumber" id="sniNumber" class="form-control " placeholder="SNI Number" (focusout)="doCheckUniqueSNI($event)"/>
+            <input type="text" formControlName="sniNumber" id="sniNumber" class="form-control " placeholder="SNI Number" (focusout)="doCheckUniqueOnFocusOut($event)"/>
           </div>
           <app-control-messages [control]="registerForm.controls.sniNumber"></app-control-messages>
-
+          <div class="unique-message" *ngIf="sniUniqueShow">
+            <i class="fas" [ngClass]="{'fa-check-circle': sniUnique, 'fa-times-circle': !sniUnique}"></i>
+            <span [ngClass]="{'unique': sniUnique, 'not-unique': !sniUnique}">SNI number is {{sniUnique? 'unique': 'not unique'}}</span>
+          </div>
+          
           <div class="or">Or</div>
-            <button class="scanner" type="submit">
+            <button class="scanner" type="submit" (click)="openQRCodeScanner()">
                 <span>SCAN QR CODE</span>
               </button>
         

@@ -5,7 +5,9 @@ import { MatDialogModule } from '@angular/material/dialog'
 import { ToastrModule } from 'ngx-toastr'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+// the scanner!
+import { ZXingScannerModule } from 'angular-weblineindia-qrcode-scanner';
+ 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ControlMessagesComponent } from './utils/control-messages/control-messages.component';
@@ -17,6 +19,7 @@ import { DashboardComponent } from './views/council-officer/components/dashboard
 import { AddEditQuestionsComponent } from './views/council-officer/modals/add-edit-questions/add-edit-questions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { QrCodeScannerModalComponent } from './auth/qr-code-scanner-modal/qr-code-scanner-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
     SurveyListComponent,
     DashboardComponent,
     AddEditQuestionsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    QrCodeScannerModalComponent
   ],
   imports: [
     MatDialogModule,
@@ -39,6 +43,7 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
       timeOut: 2000,
       preventDuplicates: true,
     }),
+    ZXingScannerModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule

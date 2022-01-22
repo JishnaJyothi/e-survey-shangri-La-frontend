@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 // Services
 import { MustMatch } from './../../services/match-validator/must-match.validator';
 import { ApiService } from './../../services/api.service';
@@ -8,6 +9,7 @@ import { ObservablesService } from './../../services/observables/observables.ser
 import { ValidationService } from './../../services/validation.service';
 // Alerts
 import { AlertBox } from './../../utils/alert-box';
+import { QrCodeScannerModalComponent } from '../qr-code-scanner-modal/qr-code-scanner-modal.component';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -17,9 +19,16 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   public passwordView = false;
   public confirmPasswordView = false;
+  public qrCodeSNI = '';
+  public sniUnique = false;
+  public sniUniqueShow = false;
+  public emailUnique = false;
+  public emailUniqueShow = false;
+
 
   constructor(
     private router: Router,
+    private dialog: MatDialog,
     private alert: AlertBox,
     private apiService: ApiService,
     private formBuilder: FormBuilder,
@@ -36,7 +45,7 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, ValidationService.passwordValidator]],
       confirmPassword: ['', [Validators.required, ValidationService.passwordValidator]],
       address: ['', [Validators.required]],
-      sniNumber: ['', [Validators.required, ValidationService.alphaNumericValidator]],
+      sniNumber: ['', [ValidationService.alphaNumericValidator]],
     },
     {
       validator: [MustMatch('password', 'confirmPassword')],
@@ -45,7 +54,7 @@ export class RegisterComponent implements OnInit {
   }
 
   //  Switching method
-  public viewPassword(passwordId: any) {
+  public viewPassword(passwordId: any): void{
     if ((document.getElementById(passwordId) as HTMLInputElement).type === 'password') {
       (document.getElementById(passwordId) as HTMLInputElement).type = 'text';
       if (passwordId === 'password') { this.passwordView = true; }
@@ -57,48 +66,86 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  public doCheckUniqueEmail(event: any){
-    if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])$/.test(event.target.value)){
-      // true
+  // call unique check functions on focusout
+  public doCheckUniqueOnFocusOut(event: any): void{
+    if (event.target.id === 'sniNumber') { this.doCheckUniqueSNI(event.target.value); }
+    else if (event.target.id === 'email') { this.doCheckUniqueEmail(event.target.value); }
+  }
+
+  // check email uniqueness
+  public doCheckUniqueEmail(value: any): void{
+    if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])$/.test(value)){
+    this.emailUnique = true;
+    this.emailUniqueShow = true;
     } else{
-      this.alert.warning('Invalid!', 'Entered email address is not valid, Please try again');
+    this.alert.warning('Invalid!', 'Entered email address is not valid, Please try again');
+    this.sniUnique = false;
+    this.sniUniqueShow = true;
     }
  }
 
- public doCheckUniqueSNI(event: any){
-   if (/^(?:[ A-Z0-9_]*)$/.test(event.target.value)){
+  // check SNI uniqueness
+  public doCheckUniqueSNI(value: any): void{
+   if (/^(?:[ A-Z0-9_]*)$/.test(value)){
+    this.sniUnique = true;
+    this.sniUniqueShow = true;
    } else{
     this.alert.warning('Invalid!', 'Entered SNI number is not valid, Please try again');
+    this.sniUnique = false;
+    this.sniUniqueShow = true;
   }
 }
 
-    public doRegister() {
-      if (this.registerForm.invalid) {
-        this.observables.changeFormValid(true);
-        return;
-      } else {
-        (document.querySelector('.register') as HTMLInputElement).setAttribute('disabled', '')
-      }
+// open modal to scan QR code
+ public openQRCodeScanner(): void {
+  const dialogRef = this.dialog.open(QrCodeScannerModalComponent, {
+    data: {
+      width: '10rem',
+      height: '10rem',
+    },
+  });
 
-      const url = '';
-      const data: any = {
-        firstname: this.registerForm.value.firstName,
-        lastname: this.registerForm.value.lastName,
-        email: this.registerForm.value.email,
-        dob: this.registerForm.value.dob,
-        password: this.registerForm.value.password,
-        address: this.registerForm.value.address,
-        sniNumber: this.registerForm.value.sniNumber,
-      };
-
-      this.apiService.doPostRequest(url, data)
-      .subscribe(
-        (returndata: any) => {
-        }, error => {
-          console.log(error);
-          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
-        }
-      );
-
+  dialogRef.afterClosed().subscribe(result => {
+    if (result.event === 'success'){
+      this.registerForm.patchValue({ sniNumber: result.value });
+      this.doCheckUniqueSNI(result.value);
     }
+  });
+ }
+
+ // function to register
+ public doRegister(): void {
+  if (this.registerForm.invalid) {
+    this.observables.changeFormValid(true);
+    return;
+  } else if (!this.sniUnique && !this.emailUnique) {
+    this.observables.changeFormValid(true);
+    return;
+  } else {
+    (document.querySelector('.register') as HTMLInputElement).setAttribute('disabled', '');
+  }
+
+  const url = '/users/register';
+  const data: any = {
+    firstname: this.registerForm.value.firstName,
+    lastname: this.registerForm.value.lastName,
+    email: this.registerForm.value.email,
+    dob: this.registerForm.value.dob,
+    password: this.registerForm.value.password,
+    address: this.registerForm.value.address,
+    sniNumber: this.registerForm.value.sniNumber,
+  };
+
+  this.apiService.doPostRequest(url, data).subscribe(
+    (returndata: any) => {
+      console.log(returndata);
+      
+    },
+    (error) => {
+      console.log(error);
+      this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+    }
+  );
+}
+
 }
