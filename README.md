@@ -12,7 +12,7 @@ Can attend the survey questions with a specific option.
 
 ## Install App
 
-Run `npm install` to instal the angular packages.
+Run `npm install` to install the angular packages.
 ## Running local
 
 move to webapp folder in terminal and run `npm start` to run the app locally
