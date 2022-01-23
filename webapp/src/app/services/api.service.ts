@@ -95,19 +95,16 @@
    }
  
    // Logout
-   public doLogout(): any {
-     return this.http
-       .post<any>(`${environment.apiURL}` + '/logout?access_token=' +
-           this.accessTokenPlatform,
-         this.httpOptions
-       )
-       .pipe(
-         map((response) => {
-           this.getClearAll();
-           return response;
-         })
-       );
-   }
+   public doLogout(data: any): any {
+    this.getAccessToken();
+    return this.http
+      .post<any>(`${environment.apiURL}` + 'users/logout', data, this.httpOptions)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
  
    /**
     * common user Service API calls
@@ -115,7 +112,7 @@
  
    // general get service | @author: jishna.av@netobjex.com
    public doGetRequest(url: any): any {
-     this.getAccessToken();
+     this.getheaders();
      return this.http
        .get<any>(`${environment.apiURL}` + url, this.httpOptions)
        .pipe(
@@ -127,7 +124,7 @@
  
    // general post service | @author: jishna.av@netobjex.com
    public doPostRequest(url: any, data: any): any {
-     this.getAccessToken();
+     this.getheaders();
      return this.http
        .post<any>(`${environment.apiURL}` + url, data, this.httpOptions)
        .pipe(
@@ -139,7 +136,7 @@
 
    // general put service | @author: jishna.av@netobjex.com
    public doPutRequest(url: any, data: any): any {
-    this.getAccessToken();
+    this.getheaders();
     return this.http
       .put<any>(`${environment.apiURL}` + url, data, this.httpOptions)
       .pipe(
@@ -160,5 +157,7 @@
     //     })
     //   );
   }
+
+
  }
  

@@ -1,14 +1,16 @@
 <div class="modal-center add-edit-div">
-  <h1 class="add-edit-modal-head">{{ modalTitle }}</h1>
+  <h1 class="add-edit-modal-head">{{ modalTitle }} Question & Options</h1>
   <div class="spinner-wrapper" *ngIf="isLoading">
     <div class="spinner"></div>
   </div>
-  <div class="row">
+  <form id="question-answer-form" class="form" [formGroup]="questionAnswerForm" autocomplete="off">
+   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <label class="q-a-label" >Question <i class="fal fa-question"></i></label>
       <div class="form-holder">
         <input type="text" formControlName="question" id="question" class="form-control" placeholder="" />
       </div>
+      <app-control-messages [control]="questionAnswerForm.controls.question"></app-control-messages>
 
       <div class="option-div">
         <label class="q-a-label"> Options </label>
@@ -16,22 +18,29 @@
         <i class="fas fa-circle"></i>
         <input type="text" formControlName="option1" id="option1" class="form-control" placeholder="" />
       </div>
+      <app-control-messages [control]="questionAnswerForm.controls.option1"></app-control-messages>
+
       <div class="form-holder">
         <i class="fas fa-circle"></i>
         <input type="text" formControlName="option2" id="option2" class="form-control" placeholder="" />
       </div>
+      <app-control-messages [control]="questionAnswerForm.controls.option2"></app-control-messages>
+
       <div class="form-holder">
         <i class="fas fa-circle"></i>
         <input type="text" formControlName="option3" id="option3" class="form-control" placeholder="" />
       </div>
+      <app-control-messages [control]="questionAnswerForm.controls.option3"></app-control-messages>
+
       </div>
 
-      <div class="button-div">
-        <button (click)="doAddEditQA()"> {{ modalTitle=='Add'?'Add':'Save' }} </button>
+      <div class="button-div" *ngIf="modalTitle !== 'View'">
+        <button (click)="doAddEditQA()" class="action"> {{ modalTitle=='Add'?'Save':'Update' }} </button>
         <button (click)="close()"> Cancel </button>
       </div>
 
     </div>
   </div>
+</form>
 </div>
 

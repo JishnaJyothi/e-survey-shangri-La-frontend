@@ -34,7 +34,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
         this.questions = returndata;
-        console.log(returndata);
       },
       (error) => {
         console.log(error);
@@ -52,8 +51,9 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result.event);
-      
+      if (result.event === 'success'){
+        this.getAllQuestions();
+      }
     });
   }
 
@@ -66,6 +66,22 @@ export class DashboardComponent implements OnInit {
     this.apiService.doDeleteRequest(url, data).subscribe(
       (returndata: any) => {
         this.questions = returndata;
+        console.log(returndata);
+      },
+      (error) => {
+        console.log(error);
+        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
+    );
+  }
+
+  public logout(): void{
+    const data = {
+      userid: this.apiService.userId
+    };
+
+    this.apiService.doLogout(data).subscribe(
+      (returndata: any) => {
         console.log(returndata);
       },
       (error) => {

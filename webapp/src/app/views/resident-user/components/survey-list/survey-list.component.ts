@@ -32,8 +32,11 @@ export class SurveyListComponent implements OnInit {
   }
 
   public getAllQuestions(): void{
-    const url = 'admin/viewQuestions';
-    this.apiService.doGetRequest(url).subscribe(
+    const url = 'users/questions';
+    const data = {
+      userId: this.apiService.userId
+    }
+    this.apiService.doPostRequest(url, data).subscribe(
       (returndata: any) => {
         this.questions = returndata;
         console.log(returndata);

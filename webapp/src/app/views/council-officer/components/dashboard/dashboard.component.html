@@ -1,7 +1,7 @@
 <div class="survey-wrapp">
   <header class="page-header">
     <span class="header-welcome"> Welcome <span class="header-name">{{ name }}</span></span>
-    <span class="logout">Logout</span>
+    <span class="logout" (click)="logout()">Logout</span>
   </header>
     <div class="survey">
       <h1 class="survey-head">e-Survey Shangri-La Dashboard</h1>
@@ -15,7 +15,7 @@
           </h6>
           <div class="question-actions">
             <i class="fas fa-eye" (click)="openAddEditQuestionOptions(question.id, 'View')"></i>
-            <i class="far fa-edit" (click)="openAddEditQuestionOptions(question.id, 'Edit')"></i>
+            <i class="far fa-edit" *ngIf="!question.attended" (click)="openAddEditQuestionOptions(question.id, 'Edit')"></i>
             <i class="far fa-trash-alt" (click)="deleteQuestion(question.id)"></i>
           </div>
         </div>
