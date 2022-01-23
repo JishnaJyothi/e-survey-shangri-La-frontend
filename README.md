@@ -15,4 +15,4 @@ Can attend the survey questions with a specific option.
 Run `npm install` to install the angular packages.
 ## Running local
 
-move to webapp folder in terminal and run `npm start` to run the app locally
+move to webapp folder in terminal and run `npm start` inside webapp folder to run the app locally
