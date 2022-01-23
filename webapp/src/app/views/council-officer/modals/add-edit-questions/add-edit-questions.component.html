@@ -34,11 +34,19 @@
 
       </div>
 
-      <div class="button-div" *ngIf="modalTitle !== ''">
-        <button (click)="doAddEditQA()" class="action"> {{ modalTitle=='Add'?'Save':'Update' }} </button>
-        <button (click)="close()"> Cancel </button>
+      <div *ngIf="modalTitle === ''" class="chart-view">
+        <h2>Total users Attended survey Question : {{ totalAttenties }}</h2>
+        <div class="container-fluid" style="position: relative; width:auto;">
+          <canvas id="oee-bar" width="2vw" height="1rem"></canvas>
+        </div>
       </div>
 
+      <div class="button-div">
+        <button *ngIf="modalTitle !== ''" (click)="doAddEditQA()" class="action"> {{ modalTitle=='Add'?'Save':'Update' }} </button>
+        <button (click)="close('cancel')">  {{ modalTitle==''?'Close':'Cancel' }}  </button>
+      </div>
+    
+      
     </div>
   </div>
 </form>

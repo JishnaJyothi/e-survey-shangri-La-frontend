@@ -62,14 +62,12 @@ export class DashboardComponent implements OnInit {
   }
 
   public deleteQuestion(qid: any): any {
-    const url = 'admin/removeQuestion';
-    const data = {
-      id: qid
-    };
-
-    this.apiService.doDeleteRequest(url, data).subscribe(
+    const url = 'admin/removeQuestion/' + qid;
+    
+    this.apiService.doDeleteRequest(url).subscribe(
       (returndata: any) => {
-        this.questions = returndata;
+        this.getAllQuestions();
+        this.alert.success('Success!', returndata.message);
       },
       (error) => {
         console.log(error);

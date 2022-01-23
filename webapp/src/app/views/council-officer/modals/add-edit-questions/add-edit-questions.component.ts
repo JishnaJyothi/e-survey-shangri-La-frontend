@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core'
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { ValidationService } from '../../../../services/validation.service';
 // Alerts
 import { AlertBox } from '../../../../utils/alert-box';
 
+// import {Chart} from 'chart.js';
+import Chart from 'chart.js/auto';
 @Component({
   selector: 'app-add-edit-questions',
   templateUrl: './add-edit-questions.component.html',
@@ -21,6 +23,8 @@ export class AddEditQuestionsComponent implements OnInit {
   public modalTitle = '';
   public isLoading: boolean;
   public readonly: boolean;
+  public totalAttenties: number;
+  public chartData = [];
 
   constructor(
     private router: Router,
@@ -117,7 +121,6 @@ export class AddEditQuestionsComponent implements OnInit {
 
     this.apiService.doPostRequest(url, data).subscribe(
       (returndata: any) => {
-        console.log(returndata);
         if (returndata.status){
           this.close('success');
           this.alert.success(returndata.title, returndata.message);
@@ -132,13 +135,17 @@ export class AddEditQuestionsComponent implements OnInit {
 
   }
 
-  
+
   public getStatistics(): any{
     const url = 'users/GetQuestionResponse/' + this.questionId;
     this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
         if (returndata){
-          console.log(returndata);
+          this.totalAttenties = returndata.TotalCount;
+          returndata.data.options.forEach(element => {
+            this.chartData.push(element.count);
+          });
+          this.chartfile(this.chartData);
         }
       },
       (error) => {
@@ -146,6 +153,26 @@ export class AddEditQuestionsComponent implements OnInit {
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );
+  }
+
+  public chartfile(dataValues): any {
+    const canvas: any = document.getElementById('oee-bar');
+    const ctx = canvas.getContext('2d');
+
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Option 1', 'Option 2', 'Option 3'],
+        datasets: [{
+          label: 'Options',
+          data: dataValues,
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+    });
+
   }
 
 }

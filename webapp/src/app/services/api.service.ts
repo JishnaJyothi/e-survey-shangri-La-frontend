@@ -151,15 +151,15 @@
   }
 
   // general delete service | @author: jishna.av@netobjex.com
-  public doDeleteRequest(url: any, data: any): any {
-    // this.getAccessToken();
-    // return this.http
-    //   .delete<any>(`${environment.apiURL}` + url, data, this.httpOptions)
-    //   .pipe(
-    //     map((response) => {
-    //       return response;
-    //     })
-    //   );
+  public doDeleteRequest(url: any): any {
+    this.getAccessToken();
+    return this.http
+      .delete<any>(`${environment.apiURL}` + url, this.httpOptions)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
   }
 
 
