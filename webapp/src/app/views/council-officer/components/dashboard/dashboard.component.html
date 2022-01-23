@@ -14,8 +14,8 @@
             <i class="fas fa-circle question-icon"></i>{{ question.question }}
           </h6>
           <div class="question-actions">
-            <i class="fas fa-eye" (click)="openAddEditQuestionOptions(question.id, 'View')"></i>
             <i class="far fa-edit" *ngIf="!question.attended" (click)="openAddEditQuestionOptions(question.id, 'Edit')"></i>
+            <i class="fas fa-eye" (click)="openAddEditQuestionOptions(question.id, 'View')"></i>
             <i class="far fa-trash-alt" (click)="deleteQuestion(question.id)"></i>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 // services
 import { ApiService } from '../../../../services/api.service';
 // Alerts
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
 
   public options = [];
   constructor(
+    private router: Router,
     public dialog: MatDialog,
     private alert: AlertBox,
     private apiService: ApiService,
@@ -51,9 +53,11 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
       if (result.event === 'success'){
         this.getAllQuestions();
       }
+    }
     });
   }
 
@@ -66,7 +70,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.doDeleteRequest(url, data).subscribe(
       (returndata: any) => {
         this.questions = returndata;
-        console.log(returndata);
       },
       (error) => {
         console.log(error);
@@ -76,13 +79,12 @@ export class DashboardComponent implements OnInit {
   }
 
   public logout(): void{
-    const data = {
-      userid: this.apiService.userId
-    };
-
-    this.apiService.doLogout(data).subscribe(
+    this.apiService.doLogout().subscribe(
       (returndata: any) => {
-        console.log(returndata);
+        if (returndata){
+          this.router.navigate(['/login']);
+          this.alert.success('Success!', 'You have successfully Logged Out, Come back again');
+        }
       },
       (error) => {
         console.log(error);

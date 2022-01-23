@@ -62,7 +62,7 @@
     * function to clear sessions and other storage variables
     * @functionCall - getClearAll()
     */
-   public getClearAll() {
+   public getClearAll(): any {
      this.userLogins = [];
      this.accessToken = '';
      this.accessTokenPlatform = '';
@@ -95,9 +95,13 @@
    }
  
    // Logout
-   public doLogout(data: any): any {
-    this.getAccessToken();
-    return this.http
+   public doLogout(): any {
+     const data = {
+      userid: this.userId
+     };
+     this.getAccessToken();
+
+     return this.http
       .post<any>(`${environment.apiURL}` + 'users/logout', data, this.httpOptions)
       .pipe(
         map((response) => {

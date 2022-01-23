@@ -20,6 +20,7 @@ export class AddEditQuestionsComponent implements OnInit {
   public questionId: number;
   public modalTitle = '';
   public isLoading: boolean;
+  public readonly: boolean;
 
   constructor(
     private router: Router,
@@ -33,9 +34,13 @@ export class AddEditQuestionsComponent implements OnInit {
     this.questionId = data.id;
     if (data.action !== 'View'){
       this.modalTitle = data.action;
+      this.readonly = false;
+    } else {
+      this.modalTitle = '';
+      this.readonly = true;
     }
 
-    if (data.action === 'Edit'){
+    if (data.action !== 'Add'){
       this.getQuestionOptions();
     }
   }
@@ -44,10 +49,10 @@ export class AddEditQuestionsComponent implements OnInit {
     this.isLoading = false;
     this.observables.changeFormValid(false);
     this.questionAnswerForm = this.formBuilder.group({
-      question: ['', [Validators.required]],
-      option1: ['', [Validators.required]],
-      option2: ['', [Validators.required]],
-      option3: ['', [Validators.required]],
+      question: [{value: '', disabled: this.readonly}, [Validators.required]],
+      option1: [{value: '', disabled: this.readonly}, [Validators.required]],
+      option2: [{value: '', disabled: this.readonly}, [Validators.required]],
+      option3: [{value: '', disabled: this.readonly}, [Validators.required]],
     });
   }
 

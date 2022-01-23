@@ -1,15 +1,16 @@
 <div class="survey-wrapp">
   <header class="page-header">
     <span class="header-welcome"> Welcome <span class="header-name">{{ name }}</span></span>
-    <span class="logout">Logout</span>
+    <span class="logout" (click)="logout()">Logout</span>
   </header>
   <div class="survey">
     <h1 class="survey-head">e-Survey Shangri-La Questions</h1>
+
     <div class="survey-question-div" *ngFor="let question of questions; let i = index">
-      <h6 class="survey-question" (click)="openQuestion(i)">
+      <h6 class="survey-question" (click)="openQuestion(question.id)">
         <i class="fas fa-circle question-icon"></i>{{ question.question }}
       </h6>
-      <div class="collapse multi-collapse" [ngClass]="{ show: questionIndex == i, hide: questionIndex != i }" id="{{ 'tab_' + i }}" >
+      <div class="collapse multi-collapse" [ngClass]="{ show: questionIndex == question.id, hide: questionIndex != question.id }" id="{{ 'tab_' + i }}" >
         <div id="loader" *ngIf="isLoading"></div>
         <div *ngIf="!isLoading" class="options-list">
           <div class="form-check" *ngFor="let option of options; let j = index">
@@ -18,17 +19,19 @@
               type="radio"
               name="questionOptions"
               id="{{ 'option_' + j }}"
-              value="option1"
+              value="{{option}}"
+              (change)="onItemChange(option.id,question.id)"
             />
             <label class="form-check-label" for="{{ 'option_' + j }}">
-              {{ option.text }}
+              {{ option.answerText }}
             </label>
           </div>
-          <div class="submit-button">
+          <div class="submit-button" (click)="submitAnswer()">
             <button>Submit</button>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </div>

@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
     this.apiService.doLogin(data)
     .subscribe(
       (returndata: any) => {
+        this.alert.success('Hey!', 'Welcome back');
         if (returndata.username === 'Admin'){
           this.router.navigate(['/council/dashboard']);
         } else{

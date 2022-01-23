@@ -31,3 +31,7 @@
     margin: 0.5rem;
     width: 8rem;
 }
+.form-control:disabled, .form-control[readonly] {
+    background-color: transparent !important;
+    border: 0;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 // services
 import { ApiService } from '../../../../services/api.service';
 // Alerts
@@ -13,15 +14,13 @@ export class SurveyListComponent implements OnInit {
   public name: string;
   public isLoading = false;
   public questionIndex: number;
-  public questions = [
-    { id: '1', text: 'Do you have a petrol/diesel car?' },
-    { id: '2', text: 'Shall SLEZ apply to PHEVs (Plug-in hybrid electric vehicles)?'},
-    { id: '3', text: 'What should be the proposed boundaries of SLEZ?' },
-  ];
+  public answerData: any;
+  public questions = [];
 
   public options = [];
 
   constructor(
+    private router: Router,
     private alert: AlertBox,
     private apiService: ApiService,
   ) {}
@@ -49,14 +48,72 @@ export class SurveyListComponent implements OnInit {
   }
   
   public openQuestion(i: number): void {
-    this.questionIndex = i;
     this.isLoading = true;
-    this.options = [
-      { id: '1', text: 'Inside the inner ring road.' },
-      { id: '2', text: 'Outskrit of the town inside outer ring road.' },
-      { id: '3', text: 'Town centre postcodes starting with SL only.' },
-    ];
+    this.questionIndex = i;
+    this.options = [];
+    const url = 'admin/viewSingleQuestions';
+    const data = {
+      id: i
+    };
 
-    this.isLoading = false;
+    this.apiService.doPostRequest(url, data).subscribe(
+      (returndata: any) => {
+        this.isLoading = false;
+        this.options = returndata.options;
+      },
+      (error) => {
+        console.log(error);
+        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
+    );
+
   }
+
+  public onItemChange(oId, qId): any{
+    this.answerData = {
+      questionid: Number(qId),
+      optionId: Number(oId),
+      userId: this.apiService.userId
+   };
+    console.log(this.answerData);
+
+    }
+
+    public submitAnswer(): void {
+      this.isLoading = true;
+      this.options = [];
+      const url = 'users/addAnswers';
+
+      this.apiService.doPostRequest(url, this.answerData).subscribe(
+        (returndata: any) => {
+          if (returndata.status) {
+          this.isLoading = false;
+          this.alert.success('Done!', 'Your answer is submitted');
+          this.getAllQuestions();
+        }
+        },
+        (error) => {
+          console.log(error);
+          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        }
+      );
+  
+    }
+
+    public logout(): void{
+      this.apiService.doLogout().subscribe(
+        (returndata: any) => {
+          if (returndata){
+            this.router.navigate(['/login']);
+            this.alert.success('Success!', 'You have successfully Logged Out, Come back again');
+          }
+          console.log(returndata);
+        },
+        (error) => {
+          console.log(error);
+          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        }
+      );
+    }
+
 }
