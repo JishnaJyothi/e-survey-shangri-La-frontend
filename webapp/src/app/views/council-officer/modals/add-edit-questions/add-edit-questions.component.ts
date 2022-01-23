@@ -38,6 +38,7 @@ export class AddEditQuestionsComponent implements OnInit {
     } else {
       this.modalTitle = '';
       this.readonly = true;
+      this.getStatistics();
     }
 
     if (data.action !== 'Add'){
@@ -61,11 +62,9 @@ export class AddEditQuestionsComponent implements OnInit {
   }
 
   public getQuestionOptions(): any{
-    const url = 'admin/viewSingleQuestions';
-    const data = {
-      id: this.questionId
-    };
-    this.apiService.doPostRequest(url, data).subscribe(
+    const url = 'admin/GetQuestionOptions/' + this.questionId;
+
+    this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
         if (returndata){
           this.questionAnswerForm.patchValue({
@@ -75,7 +74,6 @@ export class AddEditQuestionsComponent implements OnInit {
             option3: returndata.options[2].answerText
            });
         }
-        console.log(returndata);
       },
       (error) => {
         this.close('cancel');
@@ -95,7 +93,7 @@ export class AddEditQuestionsComponent implements OnInit {
     let url = '';
     let data;
     if (this.modalTitle === 'Add'){
-      url = 'admin/questions';
+      url = 'admin/createQuestionOption';
       data = {
         question: this.questionAnswerForm.value.question,
         options: [
@@ -105,7 +103,7 @@ export class AddEditQuestionsComponent implements OnInit {
         ]
       };
     } else {
-      url = 'admin/updateQuestion';
+      url = 'admin/updateQuestionOption';
       data = {
         id: this.questionId,
         question: this.questionAnswerForm.value.question,
@@ -120,9 +118,9 @@ export class AddEditQuestionsComponent implements OnInit {
     this.apiService.doPostRequest(url, data).subscribe(
       (returndata: any) => {
         console.log(returndata);
-        if (returndata){
+        if (returndata.status){
           this.close('success');
-          this.alert.success('Success!', 'Question and Options added successfully');
+          this.alert.success(returndata.title, returndata.message);
         }
       },
       (error) => {
@@ -132,8 +130,22 @@ export class AddEditQuestionsComponent implements OnInit {
       }
     );
 
+  }
 
-    
+  
+  public getStatistics(): any{
+    const url = 'users/GetQuestionResponse/' + this.questionId;
+    this.apiService.doGetRequest(url).subscribe(
+      (returndata: any) => {
+        if (returndata){
+          console.log(returndata);
+        }
+      },
+      (error) => {
+        this.close('cancel');
+        this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+      }
+    );
   }
 
 }

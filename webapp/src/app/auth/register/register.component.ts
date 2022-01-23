@@ -76,21 +76,59 @@ export class RegisterComponent implements OnInit {
   // check email uniqueness
   public doCheckUniqueEmail(value: any): void{
     if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])$/.test(value)){
-    this.emailUnique = true;
-    this.emailUniqueShow = true;
+      const url = 'users/uniqueEmail';
+      const data = {
+        email: value
+      };
+      this.apiService.doPostRequest(url, data).subscribe(
+        (returndata: any) => {
+          console.log(returndata);
+          
+          if (returndata.status){
+            this.emailUnique = true;
+            this.emailUniqueShow = true;
+          } else {
+            this.emailUnique = false;
+            this.emailUniqueShow = true;
+            this.alert.warning('Error!', returndata.status);
+          }
+        },
+        (error) => {
+          console.log(error);
+          
+          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        }
+      );
     } else{
     this.alert.warning('Invalid!', 'Entered email address is not valid, Please try again');
-    this.sniUnique = false;
-    this.sniUniqueShow = true;
+    this.emailUnique = false;
+    this.emailUniqueShow = true;
     }
  }
 
   // check SNI uniqueness
   public doCheckUniqueSNI(value: any): void{
-   if (/^(?:[ A-Z0-9_]*)$/.test(value)){
-    this.sniUnique = true;
-    this.sniUniqueShow = true;
-   } else{
+    if (/^(?:[ A-Z0-9_]*)$/.test(value)){
+      const url = 'users/uniqueSNI';
+      const data = {
+        SNI: value
+      };
+      this.apiService.doPostRequest(url, data).subscribe(
+        (returndata: any) => {
+          if (returndata.status){
+            this.sniUnique = true;
+            this.sniUniqueShow = true;
+          } else {
+            this.sniUnique = false;
+            this.sniUniqueShow = true;
+            this.alert.warning('Error!', returndata.status);
+          }
+        },
+        (error) => {
+          this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
+        }
+      );
+    } else{
     this.alert.warning('Invalid!', 'Entered SNI number is not valid, Please try again');
     this.sniUnique = false;
     this.sniUniqueShow = true;

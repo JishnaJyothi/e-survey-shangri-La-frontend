@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAllQuestions(): void{
-    const url = 'admin/viewQuestions';
+    const url = 'admin/getAllQuestions';
     this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
         this.questions = returndata;

@@ -79,7 +79,7 @@
     // Login
    public doLogin(data: any): any {
      return this.http
-       .post<any>(`${environment.apiURL}` + 'users/loginUser', data )
+       .post<any>(`${environment.apiURL}` + 'users/login', data )
        .pipe(
          map((userData: any) => {
 

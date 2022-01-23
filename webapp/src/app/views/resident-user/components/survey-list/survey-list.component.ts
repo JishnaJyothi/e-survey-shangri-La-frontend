@@ -31,10 +31,10 @@ export class SurveyListComponent implements OnInit {
   }
 
   public getAllQuestions(): void{
-    const url = 'users/questions';
+    const url = 'users/GetAllQuestions';
     const data = {
       userId: this.apiService.userId
-    }
+    };
     this.apiService.doPostRequest(url, data).subscribe(
       (returndata: any) => {
         this.questions = returndata;
@@ -46,17 +46,14 @@ export class SurveyListComponent implements OnInit {
       }
     );
   }
-  
+
   public openQuestion(i: number): void {
     this.isLoading = true;
     this.questionIndex = i;
     this.options = [];
-    const url = 'admin/viewSingleQuestions';
-    const data = {
-      id: i
-    };
+    const url = 'users/GetQuestionOptions/' + i;
 
-    this.apiService.doPostRequest(url, data).subscribe(
+    this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
         this.isLoading = false;
         this.options = returndata.options;
