@@ -38,28 +38,28 @@ export class SurveyListComponent implements OnInit {
     this.apiService.doPostRequest(url, data).subscribe(
       (returndata: any) => {
         this.questions = returndata;
-        console.log(returndata);
+        //console.log(returndata);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );
   }
 
   public openQuestion(i: number): void {
-    this.isLoading = true;
+    //this.isLoading = true;
     this.questionIndex = i;
     this.options = [];
     const url = 'users/GetQuestionOptions/' + i;
 
     this.apiService.doGetRequest(url).subscribe(
       (returndata: any) => {
-        this.isLoading = false;
+        //this.isLoading = false;
         this.options = returndata.options;
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );
@@ -72,25 +72,25 @@ export class SurveyListComponent implements OnInit {
       optionId: Number(oId),
       userId: this.apiService.userId
    };
-    console.log(this.answerData);
+    //console.log(this.answerData);
 
     }
 
     public submitAnswer(): void {
-      this.isLoading = true;
+      //this.isLoading = true;
       this.options = [];
       const url = 'users/addAnswers';
 
       this.apiService.doPostRequest(url, this.answerData).subscribe(
         (returndata: any) => {
           if (returndata.status) {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.alert.success('Done!', 'Your answer is submitted');
           this.getAllQuestions();
         }
         },
         (error) => {
-          console.log(error);
+          //console.log(error);
           this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
         }
       );
@@ -104,10 +104,10 @@ export class SurveyListComponent implements OnInit {
             this.router.navigate(['/login']);
             this.alert.success('Success!', 'You have successfully Logged Out, Come back again');
           }
-          console.log(returndata);
+          //console.log(returndata);
         },
         (error) => {
-          console.log(error);
+          //console.log(error);
           this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
         }
       );

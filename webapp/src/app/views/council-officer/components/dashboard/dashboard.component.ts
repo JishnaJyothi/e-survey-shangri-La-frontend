@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
         this.questions = returndata;
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );
@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
         this.alert.success('Success!', returndata.message);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );
@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
       }
     );

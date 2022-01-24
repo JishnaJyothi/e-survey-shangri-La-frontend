@@ -28,12 +28,12 @@ export class QrCodeScannerModalComponent implements OnInit {
   }
 
   public camerasFoundHandler(event): void{
-    // console.log(event);
+    // //console.log(event);
     this.alert.info('Camera found!', 'Please Scan your QR Code');
     this.scannerEnabled = true;
   }
   // public camerasNotFoundHandler(event): void{
-  //   // console.log(event);
+  //   // //console.log(event);
   //   this.alert.warning('Error!', 'No camera found. Please try again ');
   //   this.scannerEnabled = false;
   //   this.dialogRef.close({ event: 'cancel' });
@@ -45,7 +45,7 @@ export class QrCodeScannerModalComponent implements OnInit {
     this.dialogRef.close({ event: 'success', value: event });
   }
   // public scanErrorHandler(event): void{
-  //   // console.log(event);
+  //   // //console.log(event);
   //   this.alert.error('Error!', 'Error occurred. Please try again ');
   //   this.scannerEnabled = false;
   //   this.dialogRef.close({ event: 'cancel' });
@@ -56,7 +56,7 @@ export class QrCodeScannerModalComponent implements OnInit {
   //   this.dialogRef.close({ event: 'cancel' });
   // }
   // public scanCompleteHandler(event): void{
-  //   // console.log(event);
+  //   // //console.log(event);
   //   this.alert.success('Please Wait!', 'Scanning completed');
   //   this.scannerEnabled = false;
   // }

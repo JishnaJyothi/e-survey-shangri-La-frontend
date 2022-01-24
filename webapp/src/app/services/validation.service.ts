@@ -28,7 +28,7 @@ export class ValidationService {
       invalidMinSelect: 'Minimum one among the checkboxes should be selected',
       invalidPasswordMatch: 'Passwords do not match, Please enter the same password',
     };
-    // console.log(config[code]);
+    // //console.log(config[code]);
 
     return config[code];
   }

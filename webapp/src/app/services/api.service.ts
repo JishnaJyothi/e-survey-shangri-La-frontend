@@ -132,7 +132,7 @@
          .post<any>(`${environment.apiURL}` + url, data)
          .pipe(
            map((response) => {
-             console.log(response);
+             //console.log(response);
  
              return response;
            })
@@ -146,7 +146,7 @@
         .post<any>(`${environment.apiURL}` + url, data, this.httpOptions)
         .pipe(
           map((response) => {
-            console.log(response);
+            //console.log(response);
 
             return response;
           })

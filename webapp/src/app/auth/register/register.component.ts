@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit {
           }
         },
         (error) => {
-          console.log(error);
+          //console.log(error);
           
           this.alert.error('Error!', 'Internal Server Error, Unable to process the request. Please try again later!');
         }
