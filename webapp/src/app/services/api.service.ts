@@ -10,12 +10,12 @@
  import { of, timer } from 'rxjs';
  import { catchError, map, switchMap } from 'rxjs/operators';
  import { environment } from '../../environments/environment';
- 
+
  @Injectable({
    providedIn: 'root',
  })
  export class ApiService {
-   
+
    public accessTokenPlatform: string;
    public accessToken: string;
    public userLogins: any;
@@ -23,13 +23,13 @@
    public userRole: string;
    public userName = '';
    private httpOptions: any;
- 
+
    constructor(private http: HttpClient, private router: Router) {
      if (sessionStorage.getItem('currentUser')) {
        this.getAccessToken();
      }
    }
- 
+
    /**
     * function to do session storage and other user details storage
     * @functionCall - getAccessToken()
@@ -45,7 +45,7 @@
      }
      return;
    }
- 
+
    /**
     * function to set headers for API calls
     * @functionCall - getheaders()
@@ -57,7 +57,7 @@
        }),
      };
    }
- 
+
    /**
     * function to clear sessions and other storage variables
     * @functionCall - getClearAll()
@@ -71,11 +71,11 @@
      sessionStorage.removeItem('currentUser');
      sessionStorage.clear();
    }
- 
+
    /**
     * common authentication Service API calls
     */
- 
+
     // Login
    public doLogin(data: any): any {
      return this.http
@@ -93,7 +93,7 @@
          })
        );
    }
- 
+
    // Logout
    public doLogout(): any {
      const data = {
@@ -109,11 +109,11 @@
         })
       );
   }
- 
+
    /**
     * common user Service API calls
     */
- 
+
    // general get service | @author: jishna.av@netobjex.com
    public doGetRequest(url: any): any {
      this.getheaders();
@@ -125,17 +125,32 @@
          })
        );
    }
+
+    // general post service | @author: jishna.av@netobjex.com
+    public doPostAuthRequest(url: any, data: any): any {
+      return this.http
+         .post<any>(`${environment.apiURL}` + url, data)
+         .pipe(
+           map((response) => {
+             console.log(response);
  
+             return response;
+           })
+         );
+    }
+
    // general post service | @author: jishna.av@netobjex.com
    public doPostRequest(url: any, data: any): any {
      this.getheaders();
      return this.http
-       .post<any>(`${environment.apiURL}` + url, data, this.httpOptions)
-       .pipe(
-         map((response) => {
-           return response;
-         })
-       );
+        .post<any>(`${environment.apiURL}` + url, data, this.httpOptions)
+        .pipe(
+          map((response) => {
+            console.log(response);
+
+            return response;
+          })
+        );
    }
 
    // general put service | @author: jishna.av@netobjex.com
@@ -164,4 +179,3 @@
 
 
  }
- 
