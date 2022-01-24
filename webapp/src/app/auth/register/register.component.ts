@@ -74,23 +74,21 @@ export class RegisterComponent implements OnInit {
   }
 
   // check email uniqueness
-  public doCheckUniqueEmail(value: any): void{
+  public doCheckUniqueEmail(value: any): void{    
     if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])$/.test(value)){
       const url = 'users/uniqueEmail';
       const data = {
         email: value
       };
-      this.apiService.doPostRequest(url, data).subscribe(
+      this.apiService.doPostAuthRequest(url, data).subscribe(
         (returndata: any) => {
-          console.log(returndata);
-          
           if (returndata.status){
             this.emailUnique = true;
             this.emailUniqueShow = true;
           } else {
             this.emailUnique = false;
             this.emailUniqueShow = true;
-            this.alert.warning('Error!', returndata.status);
+            this.alert.warning('Error!', returndata.message);
           }
         },
         (error) => {
@@ -113,7 +111,7 @@ export class RegisterComponent implements OnInit {
       const data = {
         SNI: value
       };
-      this.apiService.doPostRequest(url, data).subscribe(
+      this.apiService.doPostAuthRequest(url, data).subscribe(
         (returndata: any) => {
           if (returndata.status){
             this.sniUnique = true;
@@ -121,7 +119,7 @@ export class RegisterComponent implements OnInit {
           } else {
             this.sniUnique = false;
             this.sniUniqueShow = true;
-            this.alert.warning('Error!', returndata.status);
+            this.alert.warning('Error!', returndata.message);
           }
         },
         (error) => {
@@ -177,7 +175,7 @@ export class RegisterComponent implements OnInit {
     SNI: this.registerForm.value.sniNumber,
   };
 
-  this.apiService.doPostRequest(url, data).subscribe(
+  this.apiService.doPostAuthRequest(url, data).subscribe(
     (returndata: any) => {
       if (returndata.status === 'success'){
         this.router.navigate(['/login']);
