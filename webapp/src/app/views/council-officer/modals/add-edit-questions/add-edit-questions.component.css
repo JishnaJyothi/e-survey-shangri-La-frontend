@@ -38,3 +38,7 @@
 .chart-view{
     margin-bottom: 1rem;
 }
+#question-answer-form{
+    overflow-y: scroll;
+    height: 72vh;
+}
